@@ -1,0 +1,8 @@
+{
+  "localhttp": {
+    "baseAddress": "http://localhost:5072"
+  },
+  "localhttps": {
+    "baseAddress": "https://localhost:7059"
+  }
+}

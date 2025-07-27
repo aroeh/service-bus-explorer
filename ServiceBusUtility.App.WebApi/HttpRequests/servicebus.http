@@ -1,0 +1,67 @@
+@appJson = application/json
+
+
+POST {{baseAddress}}/servicebus
+Accept: {{appJson}}
+Content-Type: {{appJson}}
+
+{
+    "payload": "I a new message"
+}
+
+### Publish a new message
+
+
+GET {{baseAddress}}/servicebus/receive
+
+### View a message
+
+
+GET {{baseAddress}}/servicebus/receive-messages?max=5
+
+### View messages
+
+
+GET {{baseAddress}}/servicebus/peek?start=3
+
+### View a message
+
+
+GET {{baseAddress}}/servicebus/peek-messages?max=5&start=0
+
+### View messages
+
+
+
+POST {{baseAddress}}/servicebus/typed
+Accept: {{appJson}}
+Content-Type: {{appJson}}
+
+{
+    "payload": "I a new message",
+    "tags": [
+      "tag"
+    ]
+}
+
+### Publish a new message
+
+
+GET {{baseAddress}}/servicebus/receive-typed
+
+### View a message
+
+
+GET {{baseAddress}}/servicebus/receive-typed-messages?max=5
+
+### View messages
+
+
+GET {{baseAddress}}/servicebus/peek-typed?start=3
+
+### View a message
+
+
+GET {{baseAddress}}/servicebus/peek-typed-messages?max=5&start=0
+
+### View messages
