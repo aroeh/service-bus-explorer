@@ -1,0 +1,22 @@
+// Goals
+Create a new UI project within the solution that can be used to connect a service bus queue and explore the messages and topics
+
+
+// Technical Details
+- Language: C#
+- Project Type: .Net Maui App
+- Project Name: ServiceBusUtility.App.Maui
+- Target Framework: net9.0
+
+
+// Steps
+1. Create a new project using the specified Project Type and Project Name above and add it to the solution
+2. Add project references to the following projects
+    - ServiceBusUtility.Core
+    - ServiceBusUtility.Infrastructure
+3. Register the service collection extensions from the following projects
+    - ServiceBusUtility.Core
+    - ServiceBusUtility.Infrastructure
+4. Add functionality to allow a user to connect to an Azure Service Bus using either a connection string or service bus namespace with Azure Entra authentication
+5. Add a view to allow a user to view queues or topics on the service bus
+6. Add views that will consume and use the IQueueExplorer inferface from the ServiceBusUtility.Core project

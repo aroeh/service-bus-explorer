@@ -6,7 +6,11 @@ Accept: {{appJson}}
 Content-Type: {{appJson}}
 
 {
-    "payload": "I a new message"
+    "text": "I am a new message",
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
 }
 
 ### Publish a new message
@@ -22,46 +26,11 @@ GET {{baseAddress}}/servicebus/receive-messages?max=5
 ### View messages
 
 
-GET {{baseAddress}}/servicebus/peek?start=3
+GET {{baseAddress}}/servicebus/peek?start=0
 
 ### View a message
 
 
 GET {{baseAddress}}/servicebus/peek-messages?max=5&start=0
-
-### View messages
-
-
-
-POST {{baseAddress}}/servicebus/typed
-Accept: {{appJson}}
-Content-Type: {{appJson}}
-
-{
-    "payload": "I a new message",
-    "tags": [
-      "tag"
-    ]
-}
-
-### Publish a new message
-
-
-GET {{baseAddress}}/servicebus/receive-typed
-
-### View a message
-
-
-GET {{baseAddress}}/servicebus/receive-typed-messages?max=5
-
-### View messages
-
-
-GET {{baseAddress}}/servicebus/peek-typed?start=3
-
-### View a message
-
-
-GET {{baseAddress}}/servicebus/peek-typed-messages?max=5&start=0
 
 ### View messages

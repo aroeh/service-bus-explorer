@@ -1,0 +1,33 @@
+// Goals
+Create a new core project within the solution to handle business logic and expose the infrastructure project functionality
+
+
+// Technical Details
+- Language: C#
+- Project Type: Class Library
+- Target Framework: net9.0
+
+
+// Code Standards
+- Prefer using Primary Constructors
+- Add comments on both interfaces and classes
+
+
+// Steps
+1. Create a new C# class library project named ServiceBusUtility.Core and add it to the solution
+2. Add the following folders to the ServiceBusUtility.Core project
+    - Extensions
+    - Interfaces
+    - Orchestrators
+3. Create a new Interface named IQueueExplorer in the ServiceBusUtility.Core project
+    - Create method definitions for the following actions
+        - Publish
+        - ReceiveMessage
+        - ReceiveMessages
+        - PeekMessage
+        - PeekMessages
+4. Create a new Orchestrator class named QueueExplorer in the ServiceBusUtility.Core project
+    - The class will implement Interface IQueueExplorer
+5. Update ServiceBusUtility.Core project and add ServiceBusUtility.Infrastructure as a project reference
+6. Update ServiceBusUtility.App.WebApi project and add ServiceBusUtility.Core as a project reference
+7. Create a new Extensions class named ServiceCollectionExtensions in the ServiceBusUtility.Core project

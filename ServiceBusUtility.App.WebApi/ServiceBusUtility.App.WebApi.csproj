@@ -12,10 +12,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceBusUtility.Infrastructure\ServiceBusUtility.Infrastructure.csproj" />
+    <ProjectReference Include="..\ServiceBusUtility.Core\ServiceBusUtility.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="HttpRequests\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

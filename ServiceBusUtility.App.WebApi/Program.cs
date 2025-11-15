@@ -1,3 +1,4 @@
+using ServiceBusUtility.Core.Extensions;
 using ServiceBusUtility.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddQueueExplorer();
 builder.Services.AddServiceBusApi();
 
 var app = builder.Build();

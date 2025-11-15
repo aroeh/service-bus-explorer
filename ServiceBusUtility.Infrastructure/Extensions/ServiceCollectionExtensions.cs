@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServiceBusApi(this IServiceCollection services)
     {
-        services.AddSingleton<IQueueApi, QueueApi>();
+        services.AddScoped<IQueueApi, QueueApi>();
 
         return services;
     }
