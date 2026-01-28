@@ -1,7 +1,9 @@
+using Azure.Messaging.ServiceBus;
 using ServiceBusUtility.Core.Interfaces;
 using ServiceBusUtility.Infrastructure.Interfaces;
 using ServiceBusUtility.Shared.Mappers;
 using ServiceBusUtility.Shared.Models;
+using System.Text.Json;
 
 namespace ServiceBusUtility.Core.Orchestrators;
 
@@ -42,14 +44,21 @@ public class QueueExplorer(IQueueApi queueApi) : IQueueExplorer
     /// <summary>
     /// Views a message on the queue without removing
     /// </summary>
+    /// <param name="includeMetaData">Indicate if message metadata should be returned</param>
     /// <param name="sequence">Message sequence to view</param>
-    /// <returns><see cref="Message"/></returns>
-    public async Task<Message?> PeekMessage(long? sequence = null)
+    /// <returns><see cref="JsonDocument"/></returns>
+    public async Task<JsonDocument?> PeekMessage(bool includeMetaData, long? sequence = null)
     {
         var receivedMessage = await _queueApi.PeekMessage(sequence);
-        Type? classType = Type.GetType("MessagePayload");
-        //var test = receivedMessage?.MapToServiceBusMessage<classType> ();
-        return receivedMessage?.MapToServiceBusMessage();
+        
+        if (receivedMessage is null)
+        {
+            return null;
+        }
+
+        return includeMetaData
+            ? receivedMessage?.MapToJsonDocument()
+            : receivedMessage?.MapBodyToJsonDocument();
     }
 
     /// <summary>
@@ -57,11 +66,20 @@ public class QueueExplorer(IQueueApi queueApi) : IQueueExplorer
     /// </summary>
     /// <param name="maxMessages">Max number of messages to view</param>
     /// <param name="startSequence">Start sequence to view messages</param>
-    /// <returns>Collection of <see cref="Message"/></returns>
-    public async Task<IReadOnlyList<Message>> PeekMessages(int maxMessages, long startSequence)
+    /// <param name="includeMetaData">Indicate if message metadata should be returned</param>
+    /// <returns>Collection of <see cref="JsonDocument"/></returns>
+    public async Task<IReadOnlyList<JsonDocument>> PeekMessages(int maxMessages, long startSequence, bool includeMetaData)
     {
-        var receivedMessages = await _queueApi.PeekMessages(maxMessages, startSequence);
-        return [.. receivedMessages.Select(_ => _.MapToServiceBusMessage())];
+        IReadOnlyList<ServiceBusReceivedMessage> receivedMessages = await _queueApi.PeekMessages(maxMessages, startSequence);
+
+        if (receivedMessages is null || receivedMessages.Count == 0)
+        {
+            return [];
+        }
+
+        return includeMetaData
+            ? [.. receivedMessages.Select(_ => _.MapToJsonDocument())]
+            : [.. receivedMessages.Select(_ => _.MapBodyToJsonDocument())];
     }
 }
 

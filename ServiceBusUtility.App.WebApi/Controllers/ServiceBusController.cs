@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceBusUtility.Core.Interfaces;
-using ServiceBusUtility.Shared.Models;
 using System.Net;
+using System.Text.Json;
 
 namespace ServiceBusUtility.App.WebApi.Controllers;
 
@@ -23,7 +23,7 @@ public class ServiceBusController
     /// <returns></returns>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpPost]
-    public async Task<IResult> Publish([FromBody] MessagePayload payload)
+    public async Task<IResult> Publish([FromBody] JsonDocument payload)
     {
         _logger.LogInformation("Publishing new message");
         await _queueExplorer.Publish(payload);
@@ -60,14 +60,15 @@ public class ServiceBusController
     /// <summary>
     /// View a message on the queue
     /// </summary>
-    /// <param name="sequence">Message sequence to view</param>
-    /// <returns><see cref="DemoReceivedMessage"/></returns>
+    /// <param name="start">Message sequence to start from when viewing</param>
+    /// <param name="includeMetaData">Indicate if message metadata should be returned</param>
+    /// <returns><see cref="JsonDocument"/></returns>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpGet("peek")]
-    public async Task<IResult> PeekMessage([FromQuery] long start)
+    public async Task<IResult> PeekMessage([FromQuery] long start, [FromQuery] bool includeMetaData)
     {
         _logger.LogInformation("Peeking a message");
-        var message = await _queueExplorer.PeekMessage(start);
+        var message = await _queueExplorer.PeekMessage(includeMetaData, start);
         return TypedResults.Ok(message);
     }
 
@@ -76,13 +77,14 @@ public class ServiceBusController
     /// </summary>
     /// <param name="max">Max number of messages to view</param>
     /// <param name="start">Message sequence to start from when viewing</param>
-    /// <returns>Collection of <see cref="DemoReceivedMessage"/></returns>
+    /// <param name="includeMetaData">Indicate if message metadata should be returned</param>
+    /// <returns>Collection of <see cref="JsonDocument"/></returns>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpGet("peek-messages")]
-    public async Task<IResult> PeekMessages([FromQuery] int max, [FromQuery] long start)
+    public async Task<IResult> PeekMessages([FromQuery] int max, [FromQuery] long start, [FromQuery] bool includeMetaData)
     {
         _logger.LogInformation("Peeking at messages");
-        var messages = await _queueExplorer.PeekMessages(max, start);
+        var messages = await _queueExplorer.PeekMessages(max, start, includeMetaData);
         return TypedResults.Ok(messages);
     }
 }
