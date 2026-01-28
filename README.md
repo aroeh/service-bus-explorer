@@ -25,7 +25,10 @@ dotnet build
     dotnet run --launch-profile "https" --no-build
     ```
 
-
+4. Clean up containers and images when done
+```
+docker compose --env-file dev.env down --rmi 'all'
+```
 
 # References
 - [Azure Service Bus Emulator](https://docs.azure.cn/en-us/service-bus-messaging/test-locally-with-service-bus-emulator?tabs=automated-script)
